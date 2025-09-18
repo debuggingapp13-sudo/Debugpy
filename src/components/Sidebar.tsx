@@ -16,7 +16,7 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const location = useLocation();
-
+  
   return (
     <>
       {/* Mobile overlay */}
@@ -42,52 +42,56 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             <X className="h-5 w-5" />
           </button>
         </div>
-
-      {/* Header */}
+        
+        {/* Header */}
         <div className="p-4 lg:p-6 border-b border-gray-700">
-        <div className="flex items-center space-x-3">
-          <div className="p-2 bg-green-600 rounded-lg">
-            <Terminal className="h-6 w-6 text-white" />
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-green-600 rounded-lg">
+              <Terminal className="h-6 w-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-lg lg:text-xl font-bold text-white">Prolog Debugger</h1>
+              <p className="text-xs lg:text-sm text-gray-400">Python Code Analysis</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-lg lg:text-xl font-bold text-white">Prolog Debugger</h1>
-            <p className="text-xs lg:text-sm text-gray-400">Python Code Analysis</p>
+        </div>
+        
+        {/* Navigation */}
+        <nav className="flex-1 p-3 lg:p-4 space-y-1 lg:space-y-2">
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = location.pathname === item.path;
+            
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={onClose}
+                className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-200 ${
+                  isActive
+                    ? 'bg-green-600 text-white shadow-lg'
+                    : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                }`}
+              >
+                <Icon className="h-5 w-5" />
+                <div className="flex-1">
+                  <div className="font-medium text-sm lg:text-base">{item.label}</div>
+                  <div className="text-xs opacity-75 hidden lg:block">{item.description}</div>
+                </div>
+              </Link>
+            );
+          })}
+        </nav>
+        
+        {/* Footer */}
+        <div className="p-3 lg:p-4 border-t border-gray-700">
+          <div className="text-xs text-gray-400 text-center">
+            Prolog Logic Programming
+            <br />
+            v1.0.0
           </div>
         </div>
       </div>
-
-      {/* Navigation */}
-        <nav className="flex-1 p-3 lg:p-4 space-y-1 lg:space-y-2">
-        {menuItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = location.pathname === item.path;
-          
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              onClick={onClose}
-              className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-200 ${
-                isActive
-                  ? 'bg-green-600 text-white shadow-lg'
-                  : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-              }`}
-            >
-              <Icon className="h-5 w-5" />
-              <div className="flex-1">
-                <div className="font-medium text-sm lg:text-base">{item.label}</div>
-                <div className="text-xs opacity-75 hidden lg:block">{item.description}</div>
-              </div>
-            </Link>
-          );
-        })}
-      </nav>
-
-     {/* Footer */}
-<div className="p-3 lg:p-4 border-t border-gray-700">
-  <div className="text-xs text-gray-400 text-center">
-    Prolog Logic Programming
-    <br />
-    v1.0.0
-  </div>
-</div>
+    </>
+  );
+};

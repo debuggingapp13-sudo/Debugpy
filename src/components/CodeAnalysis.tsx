@@ -14,6 +14,7 @@ export const CodeAnalysis: React.FC = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [executionTime, setExecutionTime] = useState(0);
   const [rulesApplied, setRulesApplied] = useState(0);
+  const [showMobileResults, setShowMobileResults] = useState(false);
   const engine = useRef(new PrologEngine());
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -37,6 +38,7 @@ export const CodeAnalysis: React.FC = () => {
     setExecutionTime(analysis.executionTime);
     setRulesApplied(analysis.rulesApplied);
     setIsAnalyzing(false);
+    setShowMobileResults(true);
 
     // Save to recent sessions
     const session: AnalysisSession = {
@@ -65,6 +67,7 @@ export const CodeAnalysis: React.FC = () => {
     setTrace([]);
     setExecutionTime(0);
     setRulesApplied(0);
+    setShowMobileResults(false);
   };
 
   const downloadResults = () => {
@@ -118,44 +121,44 @@ export const CodeAnalysis: React.FC = () => {
   return (
     <div className="h-screen bg-gray-50 flex flex-col">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 p-4">
-        <div className="flex items-center justify-between">
+      <div className="bg-white border-b border-gray-200 p-3 lg:p-4">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between space-y-3 lg:space-y-0">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Code Analysis</h1>
-            <p className="text-gray-600">Prolog-based Python code debugging</p>
+            <h1 className="text-xl lg:text-2xl font-bold text-gray-900">Code Analysis</h1>
+            <p className="text-sm lg:text-base text-gray-600">Prolog-based Python code debugging</p>
           </div>
           
-          <div className="flex items-center space-x-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
             {/* Sample Code Buttons */}
-            <div className="flex space-x-2">
+            <div className="flex space-x-1 sm:space-x-2">
               <button
                 onClick={() => loadSample('beginner')}
-                className="px-3 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors text-sm"
+                className="flex-1 sm:flex-none px-2 lg:px-3 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors text-xs lg:text-sm"
               >
                 Beginner
               </button>
               <button
                 onClick={() => loadSample('intermediate')}
-                className="px-3 py-2 bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 transition-colors text-sm"
+                className="flex-1 sm:flex-none px-2 lg:px-3 py-2 bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 transition-colors text-xs lg:text-sm"
               >
                 Intermediate
               </button>
               <button
                 onClick={() => loadSample('advanced')}
-                className="px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors text-sm"
+                className="flex-1 sm:flex-none px-2 lg:px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors text-xs lg:text-sm"
               >
                 Advanced
               </button>
             </div>
 
             {/* Action Buttons */}
-            <div className="flex space-x-2">
+            <div className="flex space-x-1 sm:space-x-2">
               <button
                 onClick={() => fileInputRef.current?.click()}
                 className="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
                 title="Upload Python file"
               >
-                <Upload className="h-4 w-4 text-gray-600" />
+                <Upload className="h-3 w-3 lg:h-4 lg:w-4 text-gray-600" />
               </button>
               
               <button
@@ -164,7 +167,7 @@ export const CodeAnalysis: React.FC = () => {
                 className="p-2 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 rounded-lg transition-colors"
                 title="Download results"
               >
-                <Download className="h-4 w-4 text-gray-600" />
+                <Download className="h-3 w-3 lg:h-4 lg:w-4 text-gray-600" />
               </button>
               
               <button
@@ -172,23 +175,24 @@ export const CodeAnalysis: React.FC = () => {
                 className="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
                 title="Clear code"
               >
-                <RotateCcw className="h-4 w-4 text-gray-600" />
+                <RotateCcw className="h-3 w-3 lg:h-4 lg:w-4 text-gray-600" />
               </button>
 
               <button
                 onClick={analyzeCode}
                 disabled={isAnalyzing}
-                className="flex items-center space-x-2 px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white rounded-lg transition-colors"
+                className="flex items-center justify-center space-x-1 lg:space-x-2 px-3 lg:px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white rounded-lg transition-colors min-w-0"
               >
                 {isAnalyzing ? (
                   <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span>Analyzing...</span>
+                    <div className="w-3 h-3 lg:w-4 lg:h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span className="text-xs lg:text-sm hidden sm:inline">Analyzing...</span>
                   </>
                 ) : (
                   <>
-                    <Play className="h-4 w-4" />
-                    <span>Apply Prolog Rules</span>
+                    <Play className="h-3 w-3 lg:h-4 lg:w-4" />
+                    <span className="text-xs lg:text-sm hidden sm:inline">Apply Rules</span>
+                    <span className="text-xs lg:text-sm sm:hidden">Analyze</span>
                   </>
                 )}
               </button>
@@ -198,7 +202,7 @@ export const CodeAnalysis: React.FC = () => {
 
         {/* Stats Bar */}
         {(results.length > 0 || rulesApplied > 0) && (
-          <div className="mt-4 flex items-center space-x-6 text-sm">
+          <div className="mt-3 lg:mt-4 flex flex-wrap items-center gap-3 lg:gap-6 text-xs lg:text-sm">
             <div className="flex items-center space-x-1">
               <Clock className="h-4 w-4 text-gray-500" />
               <span className="text-gray-600">
@@ -218,7 +222,7 @@ export const CodeAnalysis: React.FC = () => {
               </span>
             </div>
             {results.length > 0 && (
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-1 lg:space-x-2">
                 <span className={`px-2 py-1 rounded text-xs ${getPriorityColor('high')}`}>
                   High: {results.filter(r => r.priority === 'high').length}
                 </span>
@@ -235,10 +239,10 @@ export const CodeAnalysis: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
         {/* Left Panel - Code Editor */}
-        <div className="w-3/5 flex flex-col">
-          <div className="flex-1 border-r border-gray-200">
+        <div className={`${showMobileResults ? 'hidden' : 'flex'} lg:flex lg:w-3/5 flex-col`}>
+          <div className="flex-1 lg:border-r border-gray-200">
             <MonacoEditor
               value={code}
               onChange={setCode}
@@ -246,10 +250,34 @@ export const CodeAnalysis: React.FC = () => {
               theme="vs-dark"
             />
           </div>
+          
+          {/* Mobile Results Toggle */}
+          {results.length > 0 && (
+            <div className="lg:hidden p-3 bg-white border-t border-gray-200">
+              <button
+                onClick={() => setShowMobileResults(true)}
+                className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg"
+              >
+                <AlertTriangle className="h-4 w-4" />
+                <span>View Results ({results.length})</span>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Right Panel - Results and Trace */}
-        <div className="w-2/5 flex flex-col">
+        <div className={`${showMobileResults ? 'flex' : 'hidden'} lg:flex lg:w-2/5 flex-col`}>
+          {/* Mobile Back Button */}
+          <div className="lg:hidden p-3 bg-white border-b border-gray-200">
+            <button
+              onClick={() => setShowMobileResults(false)}
+              className="flex items-center space-x-2 text-blue-600"
+            >
+              <RotateCcw className="h-4 w-4" />
+              <span>Back to Code</span>
+            </button>
+          </div>
+          
           <div className="h-1/2 border-b border-gray-200">
             <ResultsPanel results={results} isAnalyzing={isAnalyzing} />
           </div>

@@ -76,35 +76,35 @@ export const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 lg:p-8 bg-gray-50 min-h-screen">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+      <div className="mb-6 lg:mb-8">
+        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
           Prolog Python Code Debugger
         </h1>
-        <p className="text-gray-600">
+        <p className="text-sm lg:text-base text-gray-600">
           Logic programming approach to Python code analysis and debugging
         </p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6 lg:mb-8">
         {stats.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <div key={index} className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-              <div className="flex items-center justify-between mb-4">
+            <div key={index} className="bg-white rounded-xl shadow-sm p-4 lg:p-6 border border-gray-200">
+              <div className="flex items-center justify-between mb-3 lg:mb-4">
                 <div className={`p-3 rounded-lg ${stat.color}`}>
-                  <Icon className="h-6 w-6 text-white" />
+                  <Icon className="h-5 w-5 lg:h-6 lg:w-6 text-white" />
                 </div>
                 <div className="text-right">
-                  <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
+                  <div className="text-xl lg:text-2xl font-bold text-gray-900">{stat.value}</div>
                   <div className="text-sm text-gray-500">items</div>
                 </div>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 mb-1">{stat.title}</h3>
-                <p className="text-sm text-gray-600">{stat.description}</p>
+                <h3 className="text-sm lg:text-base font-semibold text-gray-900 mb-1">{stat.title}</h3>
+                <p className="text-xs lg:text-sm text-gray-600">{stat.description}</p>
               </div>
             </div>
           );
@@ -112,22 +112,22 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="mb-6 lg:mb-8">
+        <h2 className="text-lg lg:text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
           {quickActions.map((action, index) => {
             const Icon = action.icon;
             return (
               <Link
                 key={index}
                 to={action.path}
-                className={`${action.color} text-white rounded-xl p-6 shadow-sm transition-all duration-200 transform hover:scale-105 hover:shadow-md`}
+                className={`${action.color} text-white rounded-xl p-4 lg:p-6 shadow-sm transition-all duration-200 transform hover:scale-105 hover:shadow-md`}
               >
-                <div className="flex items-center justify-between mb-4">
-                  <Icon className="h-8 w-8" />
+                <div className="flex items-center justify-between mb-3 lg:mb-4">
+                  <Icon className="h-6 w-6 lg:h-8 lg:w-8" />
                   <ArrowRight className="h-5 w-5" />
                 </div>
-                <h3 className="text-lg font-semibold mb-2">{action.title}</h3>
+                <h3 className="text-base lg:text-lg font-semibold mb-2">{action.title}</h3>
                 <p className="text-sm opacity-90">{action.description}</p>
               </Link>
             );
@@ -137,23 +137,23 @@ export const Dashboard: React.FC = () => {
 
       {/* Recent Activity */}
       <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Recent Activity</h2>
+        <h2 className="text-lg lg:text-xl font-semibold text-gray-900 mb-4">Recent Activity</h2>
         {recentSessions.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-3 lg:space-y-4">
             {recentSessions.map((session, index) => (
-              <div key={session.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                <div className="flex items-center space-x-4">
+              <div key={session.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 lg:p-4 bg-gray-50 rounded-lg space-y-2 sm:space-y-0">
+                <div className="flex items-center space-x-3 lg:space-x-4">
                   <div className="p-2 bg-blue-100 rounded-lg">
                     <Code className="h-4 w-4 text-blue-600" />
                   </div>
                   <div>
-                    <div className="font-medium text-gray-900">Analysis Session #{index + 1}</div>
+                    <div className="text-sm lg:text-base font-medium text-gray-900">Analysis Session #{index + 1}</div>
                     <div className="text-sm text-gray-600">
                       {session.results.length} issues found • {session.rulesApplied} rules applied
                     </div>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-right sm:text-right">
                   <div className="text-sm text-gray-600">{formatTimestamp(session.timestamp)}</div>
                   <div className="text-sm text-gray-500">{session.executionTime.toFixed(2)}ms</div>
                 </div>

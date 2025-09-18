@@ -45,9 +45,9 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({ results, isAnalyzing
   return (
     <div className="flex flex-col h-full bg-white">
       {/* Header */}
-      <div className="p-4 border-b border-gray-200">
-        <h2 className="text-lg font-semibold text-gray-900">Analysis Results</h2>
-        <p className="text-sm text-gray-600">
+      <div className="p-3 lg:p-4 border-b border-gray-200">
+        <h2 className="text-base lg:text-lg font-semibold text-gray-900">Analysis Results</h2>
+        <p className="text-xs lg:text-sm text-gray-600">
           Issues found by Prolog rule evaluation
         </p>
       </div>
@@ -70,7 +70,7 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({ results, isAnalyzing
             </div>
           </div>
         ) : (
-          <div className="p-4 space-y-3">
+          <div className="p-3 lg:p-4 space-y-2 lg:space-y-3">
             {results.map((result, index) => {
               const Icon = getIcon(result.type, result.priority);
               const colorClasses = getPriorityColor(result.type, result.priority);
@@ -78,13 +78,13 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({ results, isAnalyzing
               return (
                 <div
                   key={index}
-                  className={`border rounded-lg p-4 ${colorClasses}`}
+                  className={`border rounded-lg p-3 lg:p-4 ${colorClasses}`}
                 >
                   <div className="flex items-start space-x-3">
                     <Icon className="h-5 w-5 mt-0.5 flex-shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1">
-                        <h4 className="font-medium text-sm">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-1 space-y-1 sm:space-y-0">
+                        <h4 className="font-medium text-xs lg:text-sm">
                           {getCategoryLabel(result.category)}
                         </h4>
                         <div className="flex items-center space-x-2 text-xs">
@@ -96,7 +96,7 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({ results, isAnalyzing
                           </span>
                         </div>
                       </div>
-                      <p className="text-sm mb-2">{result.message}</p>
+                      <p className="text-xs lg:text-sm mb-2">{result.message}</p>
                       {result.suggestion && (
                         <p className="text-xs opacity-75">
                           💡 {result.suggestion}

@@ -72,11 +72,11 @@ export const KnowledgeBase: React.FC = () => {
   return (
     <div className="h-screen bg-gray-50 flex flex-col">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 p-6">
-        <div className="flex items-center justify-between">
+      <div className="bg-white border-b border-gray-200 p-4 lg:p-6">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between space-y-4 lg:space-y-0">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Prolog Knowledge Base</h1>
-            <p className="text-gray-600 mt-1">
+            <h1 className="text-xl lg:text-2xl font-bold text-gray-900">Prolog Knowledge Base</h1>
+            <p className="text-sm lg:text-base text-gray-600 mt-1">
               Facts, rules, and patterns for Python code analysis
             </p>
           </div>
@@ -89,21 +89,21 @@ export const KnowledgeBase: React.FC = () => {
               placeholder="Search knowledge base..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-4 py-2 w-80 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="pl-10 pr-4 py-2 w-full lg:w-80 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="mt-6 border-b border-gray-200">
-          <nav className="-mb-px flex space-x-8">
+        <div className="mt-4 lg:mt-6 border-b border-gray-200">
+          <nav className="-mb-px flex space-x-4 lg:space-x-8 overflow-x-auto">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`flex items-center space-x-2 pb-4 px-1 border-b-2 font-medium text-sm ${
+                  className={`flex items-center space-x-2 pb-3 lg:pb-4 px-1 border-b-2 font-medium text-xs lg:text-sm whitespace-nowrap ${
                     activeTab === tab.id
                       ? 'border-blue-500 text-blue-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -111,7 +111,7 @@ export const KnowledgeBase: React.FC = () => {
                 >
                   <Icon className="h-4 w-4" />
                   <span>{tab.label}</span>
-                  <span className={`px-2 py-1 rounded-full text-xs ${
+                  <span className={`px-1.5 lg:px-2 py-0.5 lg:py-1 rounded-full text-xs ${
                     activeTab === tab.id
                       ? 'bg-blue-100 text-blue-600'
                       : 'bg-gray-100 text-gray-600'
@@ -126,21 +126,21 @@ export const KnowledgeBase: React.FC = () => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 overflow-y-auto p-4 lg:p-6">
         {activeTab === 'facts' && (
-          <div className="space-y-6">
+          <div className="space-y-4 lg:space-y-6">
             {Object.entries(groupedFacts).map(([category, categoryFacts]) => (
               <div key={category} className="bg-white rounded-xl shadow-sm border border-gray-200">
                 <button
                   onClick={() => toggleCategory(category)}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 rounded-t-xl"
+                  className="w-full flex items-center justify-between p-3 lg:p-4 text-left hover:bg-gray-50 rounded-t-xl"
                 >
                   <div className="flex items-center space-x-3">
                     {expandedCategories.has(category) ? 
                       <ChevronDown className="h-4 w-4 text-gray-500" /> : 
                       <ChevronRight className="h-4 w-4 text-gray-500" />
                     }
-                    <h3 className="text-lg font-semibold text-gray-900 capitalize">
+                    <h3 className="text-base lg:text-lg font-semibold text-gray-900 capitalize">
                       {category.replace('_', ' ')} Facts
                     </h3>
                     <span className={`px-2 py-1 rounded-full text-xs ${getCategoryColor(category)}`}>
@@ -150,17 +150,17 @@ export const KnowledgeBase: React.FC = () => {
                 </button>
                 
                 {expandedCategories.has(category) && (
-                  <div className="border-t border-gray-200 p-4">
+                  <div className="border-t border-gray-200 p-3 lg:p-4">
                     <div className="space-y-3">
                       {categoryFacts.map((fact) => (
-                        <div key={fact.id} className="bg-gray-50 rounded-lg p-4">
+                        <div key={fact.id} className="bg-gray-50 rounded-lg p-3 lg:p-4">
                           <div className="flex items-start justify-between mb-2">
-                            <div className="font-mono text-sm text-green-600">
+                            <div className="font-mono text-xs lg:text-sm text-green-600 break-all">
                               {fact.predicate}({fact.args.map(arg => `"${arg}"`).join(', ')}).
                             </div>
                             <span className="text-xs text-gray-500">#{fact.id}</span>
                           </div>
-                          <p className="text-sm text-gray-700">{fact.description}</p>
+                          <p className="text-xs lg:text-sm text-gray-700">{fact.description}</p>
                         </div>
                       ))}
                     </div>
@@ -172,19 +172,19 @@ export const KnowledgeBase: React.FC = () => {
         )}
 
         {activeTab === 'rules' && (
-          <div className="space-y-6">
+          <div className="space-y-4 lg:space-y-6">
             {Object.entries(groupedRules).map(([category, categoryRules]) => (
               <div key={category} className="bg-white rounded-xl shadow-sm border border-gray-200">
                 <button
                   onClick={() => toggleCategory(category)}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 rounded-t-xl"
+                  className="w-full flex items-center justify-between p-3 lg:p-4 text-left hover:bg-gray-50 rounded-t-xl"
                 >
                   <div className="flex items-center space-x-3">
                     {expandedCategories.has(category) ? 
                       <ChevronDown className="h-4 w-4 text-gray-500" /> : 
                       <ChevronRight className="h-4 w-4 text-gray-500" />
                     }
-                    <h3 className="text-lg font-semibold text-gray-900 capitalize">
+                    <h3 className="text-base lg:text-lg font-semibold text-gray-900 capitalize">
                       {category} Rules
                     </h3>
                     <span className={`px-2 py-1 rounded-full text-xs ${getCategoryColor(category)}`}>
@@ -194,10 +194,10 @@ export const KnowledgeBase: React.FC = () => {
                 </button>
                 
                 {expandedCategories.has(category) && (
-                  <div className="border-t border-gray-200 p-4">
+                  <div className="border-t border-gray-200 p-3 lg:p-4">
                     <div className="space-y-4">
                       {categoryRules.map((rule) => (
-                        <div key={rule.id} className="bg-gray-50 rounded-lg p-4">
+                        <div key={rule.id} className="bg-gray-50 rounded-lg p-3 lg:p-4">
                           <div className="flex items-start justify-between mb-3">
                             <div className="flex items-center space-x-2">
                               <span className={`px-2 py-1 rounded text-xs ${getCategoryColor(rule.priority)}`}>
@@ -208,20 +208,20 @@ export const KnowledgeBase: React.FC = () => {
                           </div>
                           
                           <div className="mb-3">
-                            <div className="font-mono text-sm text-blue-600 mb-1">
+                            <div className="font-mono text-xs lg:text-sm text-blue-600 mb-1 break-all">
                               {rule.head} :-
                             </div>
-                            <div className="font-mono text-sm text-green-600 ml-4">
+                            <div className="font-mono text-xs lg:text-sm text-green-600 ml-2 lg:ml-4 break-all">
                               {rule.body.join(',\n    ')}.
                             </div>
                           </div>
                           
-                          <p className="text-sm text-gray-700 mb-2">{rule.description}</p>
+                          <p className="text-xs lg:text-sm text-gray-700 mb-2">{rule.description}</p>
                           
                           {rule.pattern && (
                             <div className="mt-3 p-3 bg-white rounded border">
                               <div className="text-xs font-medium text-gray-500 mb-1">Pattern:</div>
-                              <div className="font-mono text-xs text-purple-600">
+                              <div className="font-mono text-xs text-purple-600 break-all">
                                 {rule.pattern.toString()}
                               </div>
                             </div>
@@ -237,23 +237,23 @@ export const KnowledgeBase: React.FC = () => {
         )}
 
         {activeTab === 'patterns' && (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Pattern Library</h3>
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 lg:p-6">
+            <h3 className="text-base lg:text-lg font-semibold text-gray-900 mb-4">Pattern Library</h3>
             <div className="space-y-4">
               {rules.filter(rule => rule.pattern).map((rule) => (
-                <div key={rule.id} className="border border-gray-200 rounded-lg p-4">
+                <div key={rule.id} className="border border-gray-200 rounded-lg p-3 lg:p-4">
                   <div className="flex items-center justify-between mb-3">
-                    <h4 className="font-medium text-gray-900">{rule.head.split('(')[0]}</h4>
+                    <h4 className="text-sm lg:text-base font-medium text-gray-900 break-all">{rule.head.split('(')[0]}</h4>
                     <span className={`px-2 py-1 rounded text-xs ${getCategoryColor(rule.category)}`}>
                       {rule.category}
                     </span>
                   </div>
                   
-                  <p className="text-sm text-gray-600 mb-3">{rule.description}</p>
+                  <p className="text-xs lg:text-sm text-gray-600 mb-3">{rule.description}</p>
                   
                   <div className="bg-gray-50 rounded p-3">
                     <div className="text-xs font-medium text-gray-500 mb-1">Regular Expression:</div>
-                    <div className="font-mono text-sm text-purple-600">
+                    <div className="font-mono text-xs lg:text-sm text-purple-600 break-all">
                       {rule.pattern?.toString()}
                     </div>
                   </div>

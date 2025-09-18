@@ -83,16 +83,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         })}
       </nav>
 
-      {/* Footer */}
-        <div className="p-3 lg:p-4 border-t border-gray-700">
-        <div className="text-xs text-gray-400 text-center">
-          Prolog Logic Programming
-          <br />
-          v1.0.0
-        </div>
-      </div>
-      </div>
-    </>
-    </div>
-  );
-};
+     {/* Footer */}
+<div className="p-3 lg:p-4 border-t border-gray-700">
+  <div className="text-xs text-gray-400 text-center">
+    Prolog Logic Programming
+    <br />
+    v1.0.0
+  </div>
+</div>

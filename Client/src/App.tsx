@@ -12,18 +12,18 @@ function App() {
 
   return (
     <Router>
-      <div className="flex h-screen bg-gray-100">
+      <div className="flex bg-gray-100">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
-        <div className="flex-1 flex flex-col overflow-hidden lg:ml-0">
+        <div className="flex flex-col flex-1 overflow-hidden lg:ml-0">
           {/* Mobile Header */}
-          <div className="lg:hidden bg-white border-b border-gray-200 p-4">
+          <div className="p-4 bg-white border-b border-gray-200 lg:hidden">
             <div className="flex items-center justify-between">
               <button
                 onClick={() => setSidebarOpen(true)}
                 className="p-2 text-gray-600 hover:text-gray-900"
               >
-                <Menu className="h-6 w-6" />
+                <Menu className="w-6 h-6" />
               </button>
               <h1 className="text-lg font-semibold text-gray-900">Prolog Debugger</h1>
               <div className="w-10" /> {/* Spacer for centering */}

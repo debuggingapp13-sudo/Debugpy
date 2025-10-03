@@ -67,10 +67,10 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
   }, [theme]);
 
   return (
-    <div className="h-full w-full">
+    <div className="w-full sm:w-[46.7%] top-32 lg:fixed  sm:h-[74.4vh] h-full">
       <div
         ref={containerRef}
-        className="h-full w-full"
+        className="w-full h-full"
         style={{ minHeight: '300px' }}
       />
     </div>

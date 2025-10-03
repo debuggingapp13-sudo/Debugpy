@@ -38,9 +38,9 @@ export const InferenceTracePanel: React.FC<InferenceTracePanelProps> = ({
   return (
     <div className="flex flex-col h-full bg-white">
       {/* Header */}
-      <div className="p-3 lg:p-4 border-b border-gray-200">
-        <h2 className="text-base lg:text-lg font-semibold text-gray-900">Inference Trace</h2>
-        <p className="text-xs lg:text-sm text-gray-600">
+      <div className="p-3 border-b border-gray-200 lg:p-4">
+        <h2 className="text-base font-semibold text-gray-900 lg:text-lg">Inference Trace</h2>
+        <p className="text-xs text-gray-600 lg:text-sm">
           Step-by-step rule evaluation process
         </p>
       </div>
@@ -50,15 +50,15 @@ export const InferenceTracePanel: React.FC<InferenceTracePanelProps> = ({
         {isAnalyzing ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
-              <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+              <div className="w-8 h-8 mx-auto mb-4 border-2 border-blue-600 rounded-full border-t-transparent animate-spin" />
               <p className="text-gray-600">Tracing inference...</p>
             </div>
           </div>
         ) : trace.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
-              <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No Trace Data</h3>
+              <Clock className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+              <h3 className="mb-2 text-lg font-medium text-gray-900">No Trace Data</h3>
               <p className="text-gray-600">Run analysis to see inference trace</p>
             </div>
           </div>
@@ -72,17 +72,17 @@ export const InferenceTracePanel: React.FC<InferenceTracePanelProps> = ({
                 return (
                   <div
                     key={index}
-                    className="flex items-center space-x-2 lg:space-x-3 p-2 hover:bg-gray-50 rounded-lg"
+                    className="flex items-center p-2 space-x-2 rounded-lg lg:space-x-3 hover:bg-gray-50"
                   >
                     <div className="flex-shrink-0">
-                      <div className="w-5 h-5 lg:w-6 lg:h-6 rounded-full bg-gray-100 flex items-center justify-center text-xs font-mono text-gray-600">
+                      <div className="flex items-center justify-center w-5 h-5 font-mono text-xs text-gray-600 bg-gray-100 rounded-full lg:w-6 lg:h-6">
                         {step.step}
                       </div>
                     </div>
                     <Icon className={`h-4 w-4 flex-shrink-0 ${colorClass}`} />
                     <div className="flex-1 min-w-0">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between space-y-1 sm:space-y-0">
-                        <p className="text-xs lg:text-sm font-medium text-gray-900 truncate">
+                      <div className="flex flex-col justify-between space-y-1 sm:flex-row sm:items-center sm:space-y-0">
+                        <p className="text-xs font-medium text-gray-900 truncate lg:text-sm">
                           {step.rule}
                         </p>
                         <span className={`text-xs px-2 py-1 rounded ${
@@ -93,9 +93,9 @@ export const InferenceTracePanel: React.FC<InferenceTracePanelProps> = ({
                           {step.action.replace('_', ' ')}
                         </span>
                       </div>
-                      <p className="text-xs text-gray-600 mt-1 break-words">{step.result}</p>
+                      <p className="mt-1 text-xs text-gray-600 break-words">{step.result}</p>
                       {step.unification && (
-                        <p className="text-xs text-purple-600 mt-1">
+                        <p className="mt-1 text-xs text-purple-600">
                           Unification: {step.unification}
                         </p>
                       )}

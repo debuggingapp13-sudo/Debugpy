@@ -232,7 +232,7 @@ my_variable = 42  # Pythonic naming`,
   ];
 
   return (
-    <div className="h-screen bg-gray-50 flex flex-col">
+    <div className="h bg-gray-50 flex flex-col">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 p-4 lg:p-6">
         <div className="flex items-center justify-between">

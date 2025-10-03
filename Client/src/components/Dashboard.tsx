@@ -1,46 +1,72 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Code, Database, BookOpen, Activity, FileCheck, AlertTriangle, Info, Zap, ArrowRight } from 'lucide-react';
-import { PrologEngine } from '../engine/PrologEngine';
+import { useAnonUserId } from '../hooks/userId';
+import { Code, Database, BookOpen, Activity, FileCheck, AlertTriangle, ArrowRight } from 'lucide-react';
 import { AnalysisSession } from '../types/prolog';
 
 export const Dashboard: React.FC = () => {
-  const [engine] = useState(() => new PrologEngine());
+  const anonUserId = useAnonUserId();
   const [recentSessions, setRecentSessions] = useState<AnalysisSession[]>([]);
+  const [stats, setStats] = useState({
+    total_rules: 0,
+    total_facts: 0,
+    error_categories: 0,
+    total_sessions: 0
+  });
 
   useEffect(() => {
-    // Load recent sessions from localStorage
-    const stored = localStorage.getItem('recentSessions');
-    if (stored) {
-      setRecentSessions(JSON.parse(stored).slice(0, 5));
-    }
-  }, []);
+    if (!anonUserId) return;
+    const ac = new AbortController();
+    fetch(`http://127.0.0.1:8000/api/sessions?anon_user_id=${encodeURIComponent(anonUserId)}`, {
+      signal: ac.signal,
+      cache: "no-store",
+    })
+      .then(r => r.json())
+      .then(setRecentSessions)
+      .catch(() => {});
+    return () => ac.abort();
+  }, [anonUserId]);
 
-  const stats = [
+  useEffect(() => {
+    if (!anonUserId) return;
+    const ac = new AbortController();
+    fetch(`http://127.0.0.1:8000/api/stats?anon_user_id=${encodeURIComponent(anonUserId)}`, {
+      signal: ac.signal,
+      cache: "no-store",
+    })
+      .then(r => r.json())
+      .then(setStats)
+      .catch(() => {});
+    return () => ac.abort();
+  }, [anonUserId]);
+
+
+
+  const statCards = [
     {
       title: 'Total Prolog Rules',
-      value: engine.getRules().length,
+      value: stats.total_rules,
       icon: Database,
       color: 'bg-blue-500',
       description: 'Horn clauses for code analysis'
     },
     {
       title: 'Facts in Knowledge Base',
-      value: engine.getFacts().length,
+      value: stats.total_facts,
       icon: FileCheck,
       color: 'bg-green-500',
       description: 'Pattern definitions & mappings'
     },
     {
-      title: 'Python Error Patterns',
-      value: new Set(engine.getRules().map(r => r.category)).size,
+      title: 'Python Error Categories',
+      value: stats.error_categories,
       icon: AlertTriangle,
       color: 'bg-orange-500',
-      description: 'Categories of issues detected'
+      description: 'Types of issues detected'
     },
     {
       title: 'Recent Analysis Sessions',
-      value: recentSessions.length,
+      value: stats.total_sessions,
       icon: Activity,
       color: 'bg-purple-500',
       description: 'Debugging sessions completed'
@@ -76,35 +102,35 @@ export const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="p-4 lg:p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 lg:p-8 bg-gray-50">
       {/* Header */}
       <div className="mb-6 lg:mb-8">
-        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
+        <h1 className="mb-2 text-2xl font-bold text-gray-900 lg:text-3xl">
           Prolog Python Code Debugger
         </h1>
-        <p className="text-sm lg:text-base text-gray-600">
+        <p className="text-sm text-gray-600 lg:text-base">
           Logic programming approach to Python code analysis and debugging
         </p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6 lg:mb-8">
-        {stats.map((stat, index) => {
+      <div className="grid grid-cols-1 gap-4 mb-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6 lg:mb-8">
+        {statCards.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <div key={index} className="bg-white rounded-xl shadow-sm p-4 lg:p-6 border border-gray-200">
+            <div key={index} className="p-4 bg-white border border-gray-200 shadow-sm rounded-xl lg:p-6">
               <div className="flex items-center justify-between mb-3 lg:mb-4">
                 <div className={`p-3 rounded-lg ${stat.color}`}>
-                  <Icon className="h-5 w-5 lg:h-6 lg:w-6 text-white" />
+                  <Icon className="w-5 h-5 text-white lg:h-6 lg:w-6" />
                 </div>
                 <div className="text-right">
-                  <div className="text-xl lg:text-2xl font-bold text-gray-900">{stat.value}</div>
+                  <div className="text-xl font-bold text-gray-900 lg:text-2xl">{stat.value}</div>
                   <div className="text-sm text-gray-500">items</div>
                 </div>
               </div>
               <div>
-                <h3 className="text-sm lg:text-base font-semibold text-gray-900 mb-1">{stat.title}</h3>
-                <p className="text-xs lg:text-sm text-gray-600">{stat.description}</p>
+                <h3 className="mb-1 text-sm font-semibold text-gray-900 lg:text-base">{stat.title}</h3>
+                <p className="text-xs text-gray-600 lg:text-sm">{stat.description}</p>
               </div>
             </div>
           );
@@ -113,8 +139,8 @@ export const Dashboard: React.FC = () => {
 
       {/* Quick Actions */}
       <div className="mb-6 lg:mb-8">
-        <h2 className="text-lg lg:text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+        <h2 className="mb-4 text-lg font-semibold text-gray-900 lg:text-xl">Quick Actions</h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:gap-6">
           {quickActions.map((action, index) => {
             const Icon = action.icon;
             return (
@@ -124,10 +150,10 @@ export const Dashboard: React.FC = () => {
                 className={`${action.color} text-white rounded-xl p-4 lg:p-6 shadow-sm transition-all duration-200 transform hover:scale-105 hover:shadow-md`}
               >
                 <div className="flex items-center justify-between mb-3 lg:mb-4">
-                  <Icon className="h-6 w-6 lg:h-8 lg:w-8" />
-                  <ArrowRight className="h-5 w-5" />
+                  <Icon className="w-6 h-6 lg:h-8 lg:w-8" />
+                  <ArrowRight className="w-5 h-5" />
                 </div>
-                <h3 className="text-base lg:text-lg font-semibold mb-2">{action.title}</h3>
+                <h3 className="mb-2 text-base font-semibold lg:text-lg">{action.title}</h3>
                 <p className="text-sm opacity-90">{action.description}</p>
               </Link>
             );
@@ -136,18 +162,18 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Recent Activity */}
-      <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-        <h2 className="text-lg lg:text-xl font-semibold text-gray-900 mb-4">Recent Activity</h2>
+      <div className="p-6 bg-white border border-gray-200 shadow-sm rounded-xl">
+        <h2 className="mb-4 text-lg font-semibold text-gray-900 lg:text-xl">Recent Activity</h2>
         {recentSessions.length > 0 ? (
           <div className="space-y-3 lg:space-y-4">
             {recentSessions.map((session, index) => (
-              <div key={session.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 lg:p-4 bg-gray-50 rounded-lg space-y-2 sm:space-y-0">
+              <div key={session.id} className="flex flex-col justify-between p-3 space-y-2 rounded-lg sm:flex-row sm:items-center lg:p-4 bg-gray-50 sm:space-y-0">
                 <div className="flex items-center space-x-3 lg:space-x-4">
                   <div className="p-2 bg-blue-100 rounded-lg">
-                    <Code className="h-4 w-4 text-blue-600" />
+                    <Code className="w-4 h-4 text-blue-600" />
                   </div>
                   <div>
-                    <div className="text-sm lg:text-base font-medium text-gray-900">Analysis Session #{index + 1}</div>
+                    <div className="text-sm font-medium text-gray-900 lg:text-base">Analysis Session #{index + 1}</div>
                     <div className="text-sm text-gray-600">
                       {session.results.length} issues found • {session.rulesApplied} rules applied
                     </div>
@@ -155,16 +181,18 @@ export const Dashboard: React.FC = () => {
                 </div>
                 <div className="text-right sm:text-right">
                   <div className="text-sm text-gray-600">{formatTimestamp(session.timestamp)}</div>
-                  <div className="text-sm text-gray-500">{session.executionTime.toFixed(2)}ms</div>
+                  <div className="text-sm text-gray-500">
+                    {session.executionTime ? session.executionTime.toFixed(2) : '0.00'}ms
+                  </div>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="text-center py-8">
-            <Activity className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+          <div className="py-8 text-center">
+            <Activity className="w-12 h-12 mx-auto mb-4 text-gray-400" />
             <p className="text-gray-600">No recent debugging sessions</p>
-            <p className="text-sm text-gray-500 mt-1">Start analyzing code to see activity here</p>
+            <p className="mt-1 text-sm text-gray-500">Start analyzing code to see activity here</p>
           </div>
         )}
       </div>

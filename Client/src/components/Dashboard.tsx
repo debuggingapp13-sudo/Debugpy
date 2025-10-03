@@ -17,7 +17,7 @@ export const Dashboard: React.FC = () => {
   useEffect(() => {
     if (!anonUserId) return;
     const ac = new AbortController();
-    fetch(`http://127.0.0.1:8000/api/sessions?anon_user_id=${encodeURIComponent(anonUserId)}`, {
+    fetch(`https://debugpy.onrender.com/api/sessions?anon_user_id=${encodeURIComponent(anonUserId)}`, {
       signal: ac.signal,
       cache: "no-store",
     })
@@ -30,11 +30,11 @@ export const Dashboard: React.FC = () => {
   useEffect(() => {
     if (!anonUserId) return;
     const ac = new AbortController();
-    fetch(`http://127.0.0.1:8000/api/stats?anon_user_id=${encodeURIComponent(anonUserId)}`, {
+    fetch(`https://debugpy.onrender.com/api/stats?anon_user_id=${encodeURIComponent(anonUserId)}`, {
       signal: ac.signal,
       cache: "no-store",
     })
-      .then(r => r.json())
+      .then(r => r.json()) 
       .then(setStats)
       .catch(() => {});
     return () => ac.abort();

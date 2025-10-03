@@ -30,7 +30,7 @@ export const CodeAnalysis: React.FC = () => {
 
     try {
       //  Call backend analyzer
-      const response = await fetch("http://127.0.0.1:8000/api/analyze", {
+      const response = await fetch("https://debugpy.onrender.com/api/analyze", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,7 +52,7 @@ export const CodeAnalysis: React.FC = () => {
 
       // Save session to MongoDB
       try {
-        const saveSessionRes = await fetch("http://127.0.0.1:8000/api/sessions", {
+        const saveSessionRes = await fetch("https://debugpy.onrender.com/api/sessions", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

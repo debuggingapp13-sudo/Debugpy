@@ -1,66 +1,3 @@
-// import React, { useState } from 'react';
-// import { Search, ChevronDown, ChevronRight, Database, Code, Filter } from 'lucide-react';
-// import { PrologEngine } from '../engine/PrologEngine';
-// import { PrologRule, PrologFact } from '../types/prolog';
-// import axios from 'axios'
-
-// export const KnowledgeBase: React.FC = () => {
-//   const [activeTab, setActiveTab] = useState<'facts' | 'rules' | 'patterns'>('facts');
-//   const [searchQuery, setSearchQuery] = useState('');
-//   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(['syntax']));
-//   const engine = new PrologEngine();
-
-
-//   await fetch("http://127.0.0.1:8000/api/sessions", {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({
-//       code,
-//       results: data.results,
-//       rules_applied: data.rules_applied,
-//       execution_time: parseFloat(data.execution_time),
-//       timestamp: Date.now(),
-//     }),
-//   });
-
-
-//   const facts = engine.getFacts();
-//   const rules = engine.getRules();
-
-//   const filteredFacts = searchQuery
-//     ? engine.searchFacts(searchQuery)
-//     : facts;
-
-//   const filteredRules = searchQuery
-//     ? engine.searchRules(searchQuery)
-//     : rules;
-
-//   const groupedFacts = filteredFacts.reduce((groups, fact) => {
-//     if (!groups[fact.category]) {
-//       groups[fact.category] = [];
-//     }
-//     groups[fact.category].push(fact);
-//     return groups;
-//   }, {} as Record<string, PrologFact[]>);
-
-//   const groupedRules = filteredRules.reduce((groups, rule) => {
-//     if (!groups[rule.category]) {
-//       groups[rule.category] = [];
-//     }
-//     groups[rule.category].push(rule);
-//     return groups;
-//   }, {} as Record<string, PrologRule[]>);
-
-//   const toggleCategory = (category: string) => {
-//     const newExpanded = new Set(expandedCategories);
-//     if (newExpanded.has(category)) {
-//       newExpanded.delete(category);
-//     } else {
-//       newExpanded.add(category);
-//     }
-//     setExpandedCategories(newExpanded);
-//   };
-
 import React, { useEffect, useState } from 'react';
 import { Search, ChevronDown, ChevronRight, Database, Code, Filter } from 'lucide-react';
 import { PrologRule, PrologFact } from '../types/prolog';
@@ -76,8 +13,8 @@ export const KnowledgeBase: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const factsRes = await fetch("http://127.0.0.1:8000/api/facts");
-        const rulesRes = await fetch("http://127.0.0.1:8000/api/rules");
+        const factsRes = await fetch("https://debugpy.onrender.com/api/facts");
+        const rulesRes = await fetch("https://debugpy.onrender.com/api/rules");
         const factsData = await factsRes.json();
         const rulesData = await rulesRes.json();
 

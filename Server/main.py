@@ -9,7 +9,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "https://your-frontend.onrender.com"
+        "https://pythondebugger.netlify.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
